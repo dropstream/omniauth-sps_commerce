@@ -7,10 +7,10 @@ All notable changes to this project are documented in this file.
 ### Added
 
 - `OmniAuth::Strategies::SpsCommerce`, registered as `:sps_commerce`: the authorization code
-  flow against `auth.spscommerce.com` (`/authorize`, `/oauth/token`), with client credentials
-  in the token request body.
+  flow against `auth.spscommerce.com` (`/authorize`, `/oauth/token`), with a JSON token
+  request carrying the client credentials in its body.
 - Default scope `openid profile email offline_access` and default audience
-  `api://api.spscommerce.com/`, so the callback returns an API access token and a refresh token.
+  `https://spscommerce.com`, so the callback returns an API access token and a refresh token.
 - `uid` and `info` from the id_token, falling back to the access token's claims; `extra`
   carries both claim sets and the token response params (without the raw id_token).
 - Per-request `prompt` and `login_hint`.

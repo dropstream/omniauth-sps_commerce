@@ -13,9 +13,9 @@ module OmniAuth
     # register it twice with different names to offer both (see the README).
     class SpsCommerce < OmniAuth::Strategies::OAuth2
       DEFAULT_SITE = 'https://auth.spscommerce.com'
-      # Auth0 issues an opaque, userinfo-only access token unless the authorize
-      # request names an API audience.
-      DEFAULT_AUDIENCE = 'api://api.spscommerce.com/'
+      # The audience SPS documents for the authorize request. Without one, Auth0
+      # issues an opaque access token that only works on /userinfo.
+      DEFAULT_AUDIENCE = 'https://spscommerce.com'
       # offline_access is what makes Auth0 return a refresh token.
       DEFAULT_SCOPE = 'openid profile email offline_access'
 
@@ -25,8 +25,7 @@ module OmniAuth
         site: DEFAULT_SITE,
         authorize_url: '/authorize',
         token_url: '/oauth/token',
-        # Auth0 accepts client_secret_post and client_secret_basic; keep the
-        # credentials in the body, as the other Dropstream strategies do.
+        # SPS documents client_id and client_secret in the token request body.
         auth_scheme: :request_body
       }
 
@@ -64,6 +63,19 @@ module OmniAuth
             params[key.to_sym] = value unless value.nil? || value == ''
           end
         end
+      end
+
+      # SPS documents a JSON token request; oauth2 sends a form unless the token
+      # params carry this header. It is added here rather than through the
+      # token_params option, which would symbolize the header name, and oauth2
+      # only recognizes it as a string.
+      def build_access_token
+        client.auth_code.get_token(
+          request.params['code'],
+          { redirect_uri: callback_url, headers: { 'Content-Type' => 'application/json' } }
+            .merge(token_params.to_hash(symbolize_keys: true)),
+          deep_symbolize(options.auth_token_params)
+        )
       end
 
       # OmniAuth::Strategy#callback_url appends the callback request's own query

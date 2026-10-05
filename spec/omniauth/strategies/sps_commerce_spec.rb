@@ -66,8 +66,8 @@ RSpec.describe OmniAuth::Strategies::SpsCommerce do
       expect(authorize_query["scope"]).to eq("openid profile email offline_access")
     end
 
-    it "requests the SPS API audience by default" do
-      expect(authorize_query["audience"]).to eq("api://api.spscommerce.com/")
+    it "requests the documented SPS audience by default" do
+      expect(authorize_query["audience"]).to eq("https://spscommerce.com")
     end
 
     context "when the audience is configured" do
@@ -98,7 +98,7 @@ RSpec.describe OmniAuth::Strategies::SpsCommerce do
 
       it "does not let a request change the audience" do
         expect(authorize_query("/auth/sps_commerce", "audience" => "https://evil.example.com")["audience"])
-          .to eq("api://api.spscommerce.com/")
+          .to eq("https://spscommerce.com")
       end
 
       it "does not pass arbitrary request params through" do
@@ -124,7 +124,7 @@ RSpec.describe OmniAuth::Strategies::SpsCommerce do
     let(:session) { {"omniauth.state" => "abc123"} }
     let(:token_url) { "https://auth.spscommerce.com/oauth/token" }
     let(:access_token_claims) do
-      {"sub" => "auth0|access-sub", "aud" => ["api://api.spscommerce.com/"],
+      {"sub" => "auth0|access-sub", "aud" => ["https://spscommerce.com"],
        "https://auth.spscommerce.com/orgId" => "org-123"}
     end
     let(:token_response_body) do
@@ -158,7 +158,14 @@ RSpec.describe OmniAuth::Strategies::SpsCommerce do
     def token_request_body
       body = nil
       expect(WebMock).to have_requested(:post, token_url).with { |req| body = req.body; true }
-      URI.decode_www_form(body).to_h
+      JSON.parse(body)
+    end
+
+    it "sends the token request as JSON" do
+      complete_callback
+
+      expect(WebMock).to have_requested(:post, token_url)
+        .with(headers: {"Content-Type" => "application/json"})
     end
 
     it "exchanges the code for a token with credentials in the body" do

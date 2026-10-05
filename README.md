@@ -69,7 +69,7 @@ decoder on tokens from any other source.
 | Option | Default | Notes |
 |--------|---------|-------|
 | `scope` | `openid profile email offline_access` | `offline_access` is what returns a refresh token. |
-| `audience` | `api://api.spscommerce.com/` | Without an audience, Auth0 issues an opaque token that only works on `/userinfo`. |
+| `audience` | `https://spscommerce.com` | Without an audience, Auth0 issues an opaque token that only works on `/userinfo`. |
 | `client_options[:site]` | `https://auth.spscommerce.com` | |
 | `callback_url` | derived from the request | Drops the callback's query string, since Auth0 requires an exact `redirect_uri` match. |
 
