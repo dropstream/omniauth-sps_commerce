@@ -16,3 +16,4 @@ All notable changes to this project are documented in this file.
 - Per-request `prompt` and `login_hint`.
 - A `callback_url` override that drops the callback's query string and honors a configured
   `:callback_url`.
+- Supports `omniauth-oauth2` 1.8 as well as 1.9, so apps still on 1.8 can use it.

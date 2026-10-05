@@ -4,7 +4,7 @@ An OmniAuth strategy for [SPS Commerce](https://www.spscommerce.com). It runs th
 authorization code flow against `auth.spscommerce.com` (SPS's Auth0 tenant) and returns an
 access token and refresh token for the SPS APIs, such as the Transaction API.
 
-Requires Ruby >= 3.2, OmniAuth 2.x and `omniauth-oauth2` 1.9.x.
+Requires Ruby >= 3.2, OmniAuth 2.x and `omniauth-oauth2` 1.8 or 1.9.
 
 ## Installation
 

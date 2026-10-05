@@ -3,7 +3,7 @@ PATH
   specs:
     omniauth-sps_commerce (0.1.0)
       omniauth (~> 2.0)
-      omniauth-oauth2 (~> 1.9)
+      omniauth-oauth2 (>= 1.8, < 2)
 
 GEM
   remote: https://rubygems.org/
