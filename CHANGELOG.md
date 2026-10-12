@@ -2,7 +2,7 @@
 
 All notable changes to this project are documented in this file.
 
-## [Unreleased]
+## [0.1.0] - 2026-10-12
 
 ### Added
 
@@ -17,3 +17,5 @@ All notable changes to this project are documented in this file.
 - A `callback_url` override that drops the callback's query string and honors a configured
   `:callback_url`.
 - Supports `omniauth-oauth2` 1.8 as well as 1.9, so apps still on 1.8 can use it.
+
+[0.1.0]: https://github.com/dropstream/omniauth-sps_commerce/releases/tag/v0.1.0
